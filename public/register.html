@@ -272,6 +272,56 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 22px -8px rgba(245,166,35,0.4);
   }
+
+  /* Role dropdown styling */
+.form-row select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0, 0, 0, 0.4);
+  color: #edf2f9;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  appearance: none; /* remove default arrow */
+  cursor: pointer;
+}
+
+/* Hover */
+.form-row select:hover {
+  border-color: rgba(245,166,35,0.5);
+}
+
+/* Focus */
+.form-row select:focus {
+  outline: none;
+  border-color: #f5a623;
+  box-shadow: 0 0 0 3px rgba(245,166,35,0.2);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* Custom dropdown arrow */
+.form-row {
+  position: relative;
+}
+
+.form-row::after {
+  content: "\f078"; /* FontAwesome arrow */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 15px;
+  top: 38px;
+  color: #8da1b5;
+  pointer-events: none;
+}
+
+/* Option styling */
+.form-row select option {
+  background: #0a1424;
+  color: #fff;
+}
   .auth-hint {
     text-align: center;
     margin-top: 1.5rem;
@@ -367,6 +417,13 @@
 <label><i class="fas fa-user"></i> Full Name</label>
 <input type="text" id="fullName" placeholder="e.g., Priya Sharma">
 <div id="nameError" class="error-msg">Please enter your full name</div>
+</div>
+<div class="form-row">
+  <label><i class="fas fa-user-tag"></i> Role</label>
+  <select id="role">
+    <option value="user">User</option>
+    <option value="admin">Admin</option>
+  </select>
 </div>
 
 <div class="form-row">
@@ -618,18 +675,24 @@ Already have an account? <a href="Login.html">Sign in</a>
 <script>
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+
+  const name = document.getElementById('fullName').value;
+  const email = document.getElementById('regEmail').value;
+  const password = document.getElementById('regPassword').value;
+  const role = document.getElementById('role').value;
 
   const res = await fetch('/api/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password })
+    body: JSON.stringify({ name, email, password, role })
   });
+
   const data = await res.json();
   alert(data.message);
-  if (data.success) window.location.href = 'login.html';
+
+  if (data.success) {
+    window.location.href = 'login.html';
+  }
 });
 </script>
 </body>
