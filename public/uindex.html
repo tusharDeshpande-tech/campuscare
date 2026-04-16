@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusCare – My Dashboard | Student Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* ============================================================
+     ADVANCED GLOBAL STYLES (User Dashboard Theme)
+     ============================================================ */
+  :root {
+    --navy: #0a1424;
+    --navy-light: #111e2f;
+    --amber: #f5a623;
+    --amber-dim: #d48d1a;
+    --cream: #f8f3e9;
+    --text-main: #edf2f9;
+    --text-muted: #8da1b5;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(18, 30, 46, 0.65);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+    --glow-amber: rgba(245,166,35,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    background: rgba(10, 20, 36, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo i {
+    color: var(--amber);
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(245,166,35,0.4));
+  }
+  .logo span {
+    background: linear-gradient(135deg, #fff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .main-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    transition: var(--transition-smooth);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-menu a:hover, .main-menu a.active {
+    color: var(--cream);
+    background: rgba(245,166,35,0.12);
+    transform: translateY(-1px);
+  }
+
+  /* Hero / Welcome Section */
+  .welcome-section {
+    max-width: 1300px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+  }
+  .welcome-card {
+    background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(18,30,46,0.5));
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .welcome-text h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+  .welcome-text p {
+    color: var(--text-muted);
+  }
+  .welcome-badge {
+    background: rgba(245,166,35,0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 60px;
+    font-size: 0.8rem;
+    color: var(--amber);
+  }
+
+  /* Stats row */
+  .stats-row {
+    max-width: 1300px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+    text-align: center;
+    transition: var(--transition-smooth);
+  }
+  .stat-card:hover {
+    border-color: var(--amber);
+    transform: translateY(-3px);
+  }
+  .stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    color: var(--amber);
+  }
+  .stat-card .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+
+  /* Quick Actions Grid */
+  .dashboard-grid {
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.8rem;
+  }
+
+  .dash-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.8rem;
+    transition: var(--transition-smooth);
+    text-align: center;
+  }
+  .dash-card:hover {
+    border-color: rgba(245,166,35,0.5);
+    transform: translateY(-5px);
+  }
+  .dash-card i {
+    font-size: 2.5rem;
+    color: var(--amber);
+    margin-bottom: 1rem;
+  }
+  .dash-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  .dash-card p {
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+  }
+  .btn-link {
+    color: var(--amber);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.2s;
+  }
+  .btn-link:hover {
+    gap: 12px;
+  }
+
+  /* Recent Activity */
+  .recent-section {
+    max-width: 1300px;
+    margin: 1rem auto 3rem;
+    padding: 0 2rem;
+  }
+  .recent-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 1.8rem;
+  }
+  .recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .recent-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+  }
+  .activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .activity-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 60px;
+    transition: 0.2s;
+    border: 1px solid transparent;
+  }
+  .activity-item:hover {
+    border-color: rgba(245,166,35,0.3);
+    background: rgba(245,166,35,0.05);
+  }
+  .activity-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .activity-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(245,166,35,0.15);
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--amber);
+  }
+  .activity-detail .title {
+    font-weight: 600;
+  }
+  .activity-detail .sub {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  .activity-time {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  footer {
+    background: #07101e;
+    margin-top: 2rem;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  footer p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 780px) {
+    header { padding: 0.8rem 1.5rem; flex-direction: column; text-align: center; }
+    .main-menu { justify-content: center; }
+    .welcome-section, .stats-row, .dashboard-grid, .recent-section { padding: 0 1.2rem; }
+    .welcome-card { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+<i class="fas fa-leaf"></i>
+<span>CampusCare</span> – Student Portal
+</div>
+<nav class="main-menu">
+<a href="uindex.html" class="active"><i class="fas fa-gauge"></i> Dashboard</a>
+<a href="ureportlost.html"><i class="fas fa-box-open"></i> Report Lost</a>
+<a href="ureportfound.html"><i class="fas fa-hand-holding-heart"></i> Report Found</a>
+<a href="index.html"><i class="fas fa-right-from-bracket"></i> Logout</a>
+</nav>
+</header>
+
+<main>
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-card">
+      <div class="welcome-text">
+        <h2><i class="fas fa-smile-wink"></i> Welcome back, Alex!</h2>
+        <p>Track your lost & found activity, submit new reports, and stay updated.</p>
+      </div>
+      <div class="welcome-badge">
+        <i class="fas fa-calendar-alt"></i> Member since Jan 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number" id="myLostCount">3</div>
+      <div class="stat-label">Items I've Lost</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="myFoundCount">2</div>
+      <div class="stat-label">Items I've Found</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="resolvedCount">2</div>
+      <div class="stat-label">Resolved Matches</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <section class="dashboard-grid">
+    <div class="dash-card">
+      <i class="fas fa-box-open"></i>
+      <h3>Report Lost Item</h3>
+      <p>Lost something on campus? Let us know and we'll help you find it.</p>
+      <a href="ureportlost.html" class="btn-link">Report now <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="dash-card">
+      <i class="fas fa-hand-holding-heart"></i>
+      <h3>Report Found Item</h3>
+      <p>Found someone's belonging? Post it here to reunite with the owner.</p>
+      <a href="ureportfound.html" class="btn-link">Post found <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="dash-card">
+      <i class="fas fa-search"></i>
+      <h3>Search Items</h3>
+      <p>Browse all lost & found reports across campus.</p>
+      <a href="search.html" class="btn-link">Start search <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </section>
+
+  <!-- Recent Activity Feed -->
+  <div class="recent-section">
+    <div class="recent-card">
+      <div class="recent-header">
+        <h3><i class="fas fa-clock" style="color: var(--amber);"></i> My Recent Activity</h3>
+        <span style="font-size: 0.7rem; background: rgba(245,166,35,0.2); padding: 0.2rem 0.8rem; border-radius: 40px;">Last 7 days</span>
+      </div>
+      <div class="activity-list" id="activityFeed">
+        <!-- dynamic content -->
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-icon"><i class="fas fa-box-open"></i></div>
+            <div class="activity-detail">
+              <div class="title">You reported a lost item</div>
+              <div class="sub">MacBook Charger - Library</div>
+            </div>
+          </div>
+          <div class="activity-time">2 days ago</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-icon"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="activity-detail">
+              <div class="title">You reported a found item</div>
+              <div class="sub">Student ID Card - Canteen</div>
+            </div>
+          </div>
+          <div class="activity-time">5 days ago</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-left">
+            <div class="activity-icon"><i class="fas fa-check-circle"></i></div>
+            <div class="activity-detail">
+              <div class="title">Item marked as resolved</div>
+              <div class="sub">Your lost wallet was found ✅</div>
+            </div>
+          </div>
+          <div class="activity-time">1 week ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+<p>© 2026 CampusCare — Smart Lost & Found for Campuses</p>
+</footer>
+
+<script>
+  // Simulated user-specific data (in real app, fetch from backend)
+  // For demo, we use a logged-in user "Alex Johnson"
+  let userActivity = [
+    { type: 'lost', title: 'You reported a lost item', detail: 'MacBook Charger - Library', timeAgo: '2 days ago', icon: 'fa-box-open' },
+    { type: 'found', title: 'You reported a found item', detail: 'Student ID Card - Canteen', timeAgo: '5 days ago', icon: 'fa-hand-holding-heart' },
+    { type: 'resolved', title: 'Item marked as resolved', detail: 'Your lost wallet was found ✅', timeAgo: '1 week ago', icon: 'fa-check-circle' },
+    { type: 'lost', title: 'You reported a lost item', detail: 'Black Water Bottle - Gym', timeAgo: '2 weeks ago', icon: 'fa-box-open' }
+  ];
+
+  const activityContainer = document.getElementById('activityFeed');
+  const myLostSpan = document.getElementById('myLostCount');
+  const myFoundSpan = document.getElementById('myFoundCount');
+  const resolvedSpan = document.getElementById('resolvedCount');
+
+  // Simulate counts (can be dynamic)
+  let myLost = 3;
+  let myFound = 2;
+  let resolved = 2;
+
+  function updateStats() {
+    myLostSpan.innerText = myLost;
+    myFoundSpan.innerText = myFound;
+    resolvedSpan.innerText = resolved;
+  }
+
+  function renderActivity() {
+    if (!activityContainer) return;
+    activityContainer.innerHTML = '';
+    // show latest 3 activities
+    userActivity.slice(0, 3).forEach(act => {
+      const item = document.createElement('div');
+      item.className = 'activity-item';
+      item.innerHTML = `
+        <div class="activity-left">
+          <div class="activity-icon"><i class="fas ${act.icon}"></i></div>
+          <div class="activity-detail">
+            <div class="title">${act.title}</div>
+            <div class="sub">${act.detail}</div>
+          </div>
+        </div>
+        <div class="activity-time">${act.timeAgo}</div>
+      `;
+      activityContainer.appendChild(item);
+    });
+  }
+
+  // Simulate a new activity after 10 seconds (optional dynamic)
+  setInterval(() => {
+    // Randomly add a new activity to simulate live updates
+    const newActivities = [
+      { type: 'lost', title: 'New lost report submitted', detail: 'AirPods case - Library', timeAgo: 'Just now', icon: 'fa-box-open' },
+      { type: 'found', title: 'New found report submitted', detail: 'USB Drive - Computer Lab', timeAgo: 'Just now', icon: 'fa-hand-holding-heart' }
+    ];
+    const randomAct = newActivities[Math.floor(Math.random() * newActivities.length)];
+    userActivity.unshift(randomAct);
+    if (userActivity.length > 5) userActivity.pop();
+    renderActivity();
+
+    // Also increment stats slightly for demo (optional)
+    if (randomAct.type === 'lost') {
+      myLost += 1;
+      updateStats();
+    } else if (randomAct.type === 'found') {
+      myFound += 1;
+      updateStats();
+    }
+  }, 15000); // every 15 seconds
+
+  updateStats();
+  renderActivity();
+</script>
+<div id="stats">
+  <p>Lost: <span id="lostCount">-</span></p>
+  <p>Found: <span id="foundCount">-</span></p>
+  <p>Resolved: <span id="resolvedCount">-</span></p>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) window.location.href = 'login.html';
+
+async function loadStats() {
+  const res = await fetch('/api/user/stats', {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  const data = await res.json();
+  if (data.success) {
+    document.getElementById('lostCount').innerText = data.lostCount;
+    document.getElementById('foundCount').innerText = data.foundCount;
+    document.getElementById('resolvedCount').innerText = data.resolvedCount;
+  }
+}
+loadStats();
+</script>
+</body>
+</html>

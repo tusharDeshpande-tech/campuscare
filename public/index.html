@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CampusCare · Smart Lost & Found | Advanced Campus Hub</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* ============================================================
+       ADVANCED GLOBAL STYLES (CampusCare Enhanced)
+       ============================================================ */
+    :root {
+      --navy: #0a1424;
+      --navy-light: #111e2f;
+      --amber: #f5a623;
+      --amber-dim: #d48d1a;
+      --cream: #f8f3e9;
+      --text-main: #edf2f9;
+      --text-muted: #8da1b5;
+      --border: rgba(255,255,255,0.08);
+      --card-bg: rgba(18, 30, 46, 0.65);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+      --glow-amber: rgba(245,166,35,0.2);
+      --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+      color: var(--text-main);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* animated bg grain */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ========== NAVBAR (advanced glassmorphism) ========== */
+    .navbar {
+      background: rgba(10, 20, 36, 0.82);
+      backdrop-filter: blur(16px);
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition-smooth);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .logo i {
+      color: var(--amber);
+      filter: drop-shadow(0 0 6px rgba(245,166,35,0.5));
+    }
+
+    .logo span {
+      color: var(--amber);
+    }
+
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      transition: var(--transition-smooth);
+      font-size: 0.95rem;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--cream);
+      background: rgba(245,166,35,0.12);
+    }
+
+    .btn-nav {
+      background: linear-gradient(105deg, var(--amber), #e08e1a);
+      color: #0a1424 !important;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(245,166,35,0.3);
+    }
+
+    .btn-nav:hover {
+      transform: translateY(-2px);
+      background: var(--amber-dim);
+      color: #0a1424 !important;
+    }
+
+    /* ========== HERO (advanced floating cards & grid) ========== */
+    .hero {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 2rem 2rem 1rem;
+      display: grid;
+      grid-template-columns: 1fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero-left .hero-tag {
+      display: inline-block;
+      background: rgba(245,166,35,0.15);
+      backdrop-filter: blur(4px);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--amber);
+      margin-bottom: 1rem;
+      border: 1px solid rgba(245,166,35,0.3);
+    }
+
+    .hero-left h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--amber) 80%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-left p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 90%;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.8rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      font-size: 0.95rem;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: #0a1424;
+      box-shadow: 0 8px 18px rgba(245,166,35,0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--amber-dim);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -8px rgba(245,166,35,0.4);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--cream);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--amber);
+      background: rgba(245,166,35,0.1);
+      transform: translateY(-2px);
+    }
+
+    /* floating cards */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .float-card {
+      background: rgba(20, 32, 48, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1rem 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.25s;
+      animation: floatGlow 6s infinite alternate;
+    }
+
+    .float-card:nth-child(1) { animation-delay: 0s; }
+    .float-card:nth-child(2) { animation-delay: 1s; }
+    .float-card:nth-child(3) { animation-delay: 2s; }
+
+    @keyframes floatGlow {
+      0% { transform: translateY(0px); border-color: rgba(255,255,255,0.05);}
+      100% { transform: translateY(-6px); border-color: rgba(245,166,35,0.3); box-shadow: 0 12px 25px -10px rgba(0,0,0,0.5);}
+    }
+
+    .float-card .ic {
+      width: 48px;
+      height: 48px;
+      background: rgba(245,166,35,0.15);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--amber);
+    }
+
+    .fc-text .title {
+      font-weight: 700;
+      color: var(--cream);
+    }
+    .fc-text .sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* stats section */
+    .stats-section {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding: 0 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      background: rgba(0,0,0,0.2);
+      border-radius: 40px;
+      padding: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 0.5rem;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      font-family: 'Syne', sans-serif;
+      color: var(--amber);
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    /* Features grid (advanced) */
+    .page {
+      max-width: 1300px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+    .section-label {
+      text-align: center;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      text-align: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .stat-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 2rem 1.8rem;
+      flex: 1 1 280px;
+      transition: var(--transition-smooth);
+      text-align: center;
+    }
+    .card:hover {
+      border-color: var(--amber);
+      transform: translateY(-8px);
+      background: rgba(30, 48, 70, 0.7);
+    }
+    .feature-icon {
+      font-size: 2.8rem;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+    .meta {
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    /* recent items table / advanced */
+    .recent-section {
+      background: rgba(0,0,0,0.25);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      margin-top: 2rem;
+      border: 1px solid var(--border);
+    }
+    .recent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .recent-header h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+    }
+    .badge-new {
+      background: rgba(245,166,35,0.2);
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      color: var(--amber);
+    }
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.03);
+      padding: 0.8rem 1rem;
+      border-radius: 60px;
+      transition: 0.2s;
+      border: 1px solid transparent;
+    }
+    .item-row:hover {
+      border-color: rgba(245,166,35,0.3);
+      background: rgba(245,166,35,0.05);
+    }
+    .item-info {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .item-cat {
+      background: var(--navy-light);
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+    }
+    .status {
+      color: var(--amber);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    footer {
+      background: #07101e;
+      margin-top: 4rem;
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .footer-links {
+      margin-top: 0.8rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+    .footer-links a:hover {
+      color: var(--amber);
+    }
+
+    @media (max-width: 850px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      .navbar {
+        padding: 0.8rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">
+    <i class="fas fa-leaf"></i> Campus<span>Care</span>
+  </div>
+<nav class="main-menu">
+<a href="index.html"><i class="fas fa-home"></i> Home</a>
+<a href="search.html" class="active"><i class="fas fa-sliders-h"></i> Search</a>
+<a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+<a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+<a href="login.html"><i class="fas fa-user"></i> Login</a>
+</nav>
+</header>
+
+<!-- HERO SECTION (advanced animated) -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag"><i class="fas fa-magic"></i> Smart Campus System</div>
+    <h1>
+      Find your lost items <em>faster</em>
+    </h1>
+    <p>
+      CampusCare helps students reconnect with lost belongings using AI-assisted matching, real-time notifications, and a caring community.
+    </p>
+    <div class="hero-btns">
+      <a href="#" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i> Get Started
+      </a>
+      <a href="#" class="btn btn-outline">
+        <i class="fas fa-search"></i> Browse Items
+      </a>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE VISUAL FLOATING CARDS -->
+  <div class="hero-visual">
+    <div class="float-card">
+      <div class="ic"><i class="fas fa-box"></i></div>
+      <div class="fc-text">
+        <div class="title">Lost Item Reported</div>
+        <div class="sub">Wallet near library · 10 min ago</div>
+      </div>
+    </div>
+    <div class="float-card">
+      <div class="ic"><i class="fas fa-hand-holding-heart"></i></div>
+      <div class="fc-text">
+        <div class="title">Item Found</div>
+        <div class="sub">Mobile phone in Lab 203</div>
+      </div>
+    </div>
+    <div class="float-card">
+      <div class="ic"><i class="fas fa-check-circle"></i></div>
+      <div class="fc-text">
+        <div class="title">Matched Successfully</div>
+        <div class="sub">Owner notified via SMS</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE STATS COUNTER (dynamic) -->
+<div class="stats-section">
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-item">
+      <div class="stat-number" id="lostCount">187</div>
+      <div class="stat-label">Items Lost</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="foundCount">243</div>
+      <div class="stat-label">Items Found</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="matchedCount">156</div>
+      <div class="stat-label">Successful Matches</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="usersCount">1.2k</div>
+      <div class="stat-label">Active Users</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES SECTION -->
+<section class="page">
+  <div class="section-label">Features</div>
+  <h2 class="section-title">What you can do</h2>
+  <div class="stat-grid">
+    <div class="card">
+      <div class="feature-icon"><i class="fas fa-box-open"></i></div>
+      <h3>Report Lost</h3>
+      <p class="meta">Quickly report items you've lost on campus.</p>
+      <a href="#" class="btn btn-outline" style="margin-top: 0.5rem;">Report Now</a>
+    </div>
+    <div class="card">
+      <div class="feature-icon"><i class="fas fa-hand-holding-heart"></i></div>
+      <h3>Post Found</h3>
+      <p class="meta">Help others by reporting items you’ve found.</p>
+      <a href="#" class="btn btn-outline">Post Found</a>
+    </div>
+    <div class="card">
+      <div class="feature-icon"><i class="fas fa-search"></i></div>
+      <h3>Search Items</h3>
+      <p class="meta">Browse and find lost items easily.</p>
+      <a href="#" class="btn btn-outline">Search</a>
+    </div>
+  </div>
+
+  <!-- ADVANCED: RECENT ACTIVITY (real-time like) -->
+  <div class="recent-section">
+    <div class="recent-header">
+      <h3><i class="fas fa-clock" style="color: var(--amber);"></i> Recently reported</h3>
+      <span class="badge-new">live updates</span>
+    </div>
+    <div class="item-list" id="recentItemsList">
+      <!-- dynamic JS will fill -->
+      <div class="item-row">
+        <div class="item-info"><i class="fas fa-id-card"></i> Student ID card</div>
+        <div class="item-cat">Lost</div>
+        <div class="status">pending match</div>
+      </div>
+      <div class="item-row">
+        <div class="item-info"><i class="fas fa-headphones"></i> AirPods case</div>
+        <div class="item-cat">Found</div>
+        <div class="status">awaiting owner</div>
+      </div>
+      <div class="item-row">
+        <div class="item-info"><i class="fas fa-book"></i> Calculus textbook</div>
+        <div class="item-cat">Lost</div>
+        <div class="status">reported 2h ago</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-content">
+    <p>© 2025 CampusCare — Intelligent Lost & Found for modern campuses</p>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Support</a>
+      <a href="#"><i class="fab fa-twitter"></i> CampusX</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Advanced dynamic counters + recent items feed (simulated)
+  (function() {
+    // initial values
+    let lost = 187;
+    let found = 243;
+    let matched = 156;
+
+    const lostEl = document.getElementById('lostCount');
+    const foundEl = document.getElementById('foundCount');
+    const matchedEl = document.getElementById('matchedCount');
+
+    // recent items dataset (expandable)
+    const recentItems = [
+      { icon: 'fa-id-card', name: 'Student ID card', type: 'Lost', status: 'pending match' },
+      { icon: 'fa-headphones', name: 'AirPods case', type: 'Found', status: 'awaiting owner' },
+      { icon: 'fa-book', name: 'Calculus textbook', type: 'Lost', status: 'reported 2h ago' },
+      { icon: 'fa-mug-hot', name: 'Yeti tumbler', type: 'Found', status: 'held at library desk' },
+      { icon: 'fa-laptop', name: 'Dell charger', type: 'Lost', status: 'urgent' }
+    ];
+
+    function renderRecent() {
+      const container = document.getElementById('recentItemsList');
+      if (!container) return;
+      container.innerHTML = '';
+      // show first 4 items
+      recentItems.slice(0,4).forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div class="item-info"><i class="fas ${item.icon}"></i> ${item.name}</div>
+          <div class="item-cat">${item.type}</div>
+          <div class="status">${item.status}</div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // simulate realtime increment every 6 seconds (make it alive)
+    function animateValue(element, start, end, duration = 800) {
+      if (!element) return;
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const current = Math.floor(progress * (end - start) + start);
+        element.innerText = current;
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          element.innerText = end;
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // periodic increment to show dynamic feeling
+    let lostVal = lost, foundVal = found, matchedVal = matched;
+    setInterval(() => {
+      // random increment for lost & found (simulate new reports)
+      const incLost = Math.floor(Math.random() * 2); // 0 or 1
+      const incFound = Math.floor(Math.random() * 2);
+      const incMatched = Math.floor(Math.random() * 1); // matches increase slowly
+
+      if (incLost > 0) lostVal += incLost;
+      if (incFound > 0) foundVal += incFound;
+      if (incMatched > 0 && matchedVal < (foundVal + lostVal)/1.5) matchedVal += incMatched;
+
+      animateValue(lostEl, parseInt(lostEl.innerText) || lostVal, lostVal, 400);
+      animateValue(foundEl, parseInt(foundEl.innerText) || foundVal, foundVal, 400);
+      animateValue(matchedEl, parseInt(matchedEl.innerText) || matchedVal, matchedVal, 400);
+
+      // also add a new recent item occasionally (simulate new report)
+      const newItems = [
+        { icon: 'fa-key', name: 'Dorm room keys', type: 'Lost', status: 'just now' },
+        { icon: 'fa-glasses', name: 'Ray-Ban glasses', type: 'Found', status: 'pending claim' }
+      ];
+      if (Math.random() > 0.6) {
+        const randNew = newItems[Math.floor(Math.random() * newItems.length)];
+        recentItems.unshift(randNew);
+        if (recentItems.length > 6) recentItems.pop();
+        renderRecent();
+      }
+    }, 7000);
+
+    // initial animations
+    setTimeout(() => {
+      animateValue(lostEl, 167, lostVal, 700);
+      animateValue(foundEl, 210, foundVal, 700);
+      animateValue(matchedEl, 130, matchedVal, 700);
+    }, 300);
+    renderRecent();
+
+    // interactive hover on stat numbers (cosmetic)
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+      stat.addEventListener('mouseenter', () => {
+        stat.style.textShadow = '0 0 6px #f5a623';
+      });
+      stat.addEventListener('mouseleave', () => {
+        stat.style.textShadow = 'none';
+      });
+    });
+  })();
+</script>
+</body>
+</html>

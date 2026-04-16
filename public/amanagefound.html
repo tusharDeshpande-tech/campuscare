@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusCare – Found Reports | Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* ============================================================
+     ADVANCED GLOBAL STYLES (Admin Found Reports)
+     ============================================================ */
+  :root {
+    --navy: #0a1424;
+    --navy-light: #111e2f;
+    --amber: #f5a623;
+    --amber-dim: #d48d1a;
+    --cream: #f8f3e9;
+    --text-main: #edf2f9;
+    --text-muted: #8da1b5;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(18, 30, 46, 0.65);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+    --glow-amber: rgba(245,166,35,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    background: rgba(10, 20, 36, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo i {
+    color: var(--amber);
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(245,166,35,0.4));
+  }
+  .logo span {
+    background: linear-gradient(135deg, #fff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .main-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    transition: var(--transition-smooth);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-menu a:hover, .main-menu a.active {
+    color: var(--cream);
+    background: rgba(245,166,35,0.12);
+    transform: translateY(-1px);
+  }
+
+  /* Hero */
+  .page-hero {
+    text-align: center;
+    padding: 2rem 1.5rem 0.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .page-hero p {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  /* Stats row */
+  .stats-row {
+    max-width: 1300px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.2rem;
+    text-align: center;
+    transition: var(--transition-smooth);
+  }
+  .stat-card:hover {
+    border-color: var(--amber);
+    transform: translateY(-3px);
+  }
+  .stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    color: var(--amber);
+  }
+  .stat-card .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+
+  /* Search & Filter Bar */
+  .search-bar {
+    max-width: 1300px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .search-input {
+    flex: 2;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 60px;
+    padding: 0.5rem 1rem;
+    gap: 10px;
+  }
+  .search-input i {
+    color: var(--text-muted);
+  }
+  .search-input input {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    width: 100%;
+    outline: none;
+    font-size: 0.9rem;
+  }
+  .filter-select {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 60px;
+    padding: 0.6rem 1.2rem;
+    color: var(--text-main);
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+  }
+  .refresh-btn {
+    background: rgba(245,166,35,0.15);
+    border: 1px solid var(--border);
+    border-radius: 60px;
+    padding: 0.6rem 1.2rem;
+    color: var(--amber);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .refresh-btn:hover {
+    background: var(--amber);
+    color: var(--navy);
+  }
+
+  /* Table Container */
+  .table-container {
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    overflow-x: auto;
+  }
+  .reports-table {
+    width: 100%;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    border-collapse: collapse;
+    overflow: hidden;
+  }
+  .reports-table th,
+  .reports-table td {
+    padding: 1rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .reports-table th {
+    background: rgba(0,0,0,0.3);
+    font-weight: 600;
+    color: var(--amber);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .reports-table tr:hover {
+    background: rgba(245,166,35,0.05);
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  .status-pending {
+    background: rgba(245,166,35,0.2);
+    color: var(--amber);
+  }
+  .status-resolved {
+    background: rgba(40,167,69,0.2);
+    color: #8eff9a;
+  }
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  .action-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 30px;
+    transition: 0.2s;
+    font-size: 0.9rem;
+  }
+  .action-btn.view:hover {
+    color: var(--amber);
+    background: rgba(245,166,35,0.2);
+  }
+  .action-btn.resolve:hover {
+    color: #8eff9a;
+    background: rgba(40,167,69,0.2);
+  }
+  .action-btn.delete:hover {
+    color: #ff6b6b;
+    background: rgba(255,107,107,0.2);
+  }
+  .no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+  }
+
+  footer {
+    background: #07101e;
+    margin-top: 2rem;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  footer p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 780px) {
+    header { padding: 0.8rem 1.5rem; flex-direction: column; text-align: center; }
+    .main-menu { justify-content: center; }
+    .stats-row, .search-bar, .table-container { padding: 0 1.2rem; }
+    .reports-table th, .reports-table td { padding: 0.75rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+<i class="fas fa-leaf"></i>
+<span>CampusCare</span> – Admin Panel
+</div>
+<nav class="main-menu">
+<a href="aindex.html"><i class="fas fa-gauge"></i> Dashboard</a>
+<a href="amanageusers.html"><i class="fas fa-users"></i> Manage Users</a>
+<a href="amanagelost.html"><i class="fas fa-box-open"></i> Lost Reports</a>
+<a href="amanagefound.html" class="active"><i class="fas fa-hand-holding-heart"></i> Found Reports</a>
+<a href="index.html"><i class="fas fa-right-from-bracket"></i> Logout</a>
+</nav>
+</header>
+
+<main>
+<section class="page-hero">
+<h1><i class="fas fa-hand-holding-heart"></i> Found Item Reports</h1>
+<p>Monitor, verify, and manage found item submissions</p>
+</section>
+
+<!-- Stats Overview -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-card">
+    <div class="stat-number" id="totalFound">0</div>
+    <div class="stat-label">Total Found Reports</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" id="pendingCount">0</div>
+    <div class="stat-label">Pending Review</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number" id="resolvedCount">0</div>
+    <div class="stat-label">Resolved / Returned</div>
+  </div>
+</div>
+
+<!-- Search & Filter -->
+<div class="search-bar">
+  <div class="search-input">
+    <i class="fas fa-search"></i>
+    <input type="text" id="searchInput" placeholder="Search by item name, location, reporter...">
+  </div>
+  <select id="statusFilter" class="filter-select">
+    <option value="all">All Status</option>
+    <option value="pending">Pending</option>
+    <option value="resolved">Resolved</option>
+  </select>
+  <button id="refreshBtn" class="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
+</div>
+
+<!-- Found Reports Table -->
+<div class="table-container">
+  <table class="reports-table" id="foundTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Item Name</th>
+        <th>Location</th>
+        <th>Reporter</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- dynamic rows -->
+      <tr><td colspan="7" class="no-data">Loading reports...</td></tr>
+    </tbody>
+  </table>
+</div>
+</main>
+
+<footer>
+<p>© 2026 CampusCare Admin Panel — Found Reports Management</p>
+</footer>
+
+<script>
+  // Simulated dataset of found reports
+  let foundReports = [
+    { id: 101, item: "Apple AirPods Pro", location: "Library - 2nd floor", reporter: "john.doe@campus.edu", date: "2026-04-14", status: "pending" },
+    { id: 102, item: "Student ID Card - Emily Chen", location: "Canteen", reporter: "emily.chen@campus.edu", date: "2026-04-15", status: "pending" },
+    { id: 103, item: "TI-84 Calculator", location: "Math Building Room 204", reporter: "prof.smith@campus.edu", date: "2026-04-13", status: "resolved" },
+    { id: 104, item: "Black Leather Wallet", location: "Parking Lot B", reporter: "security@campus.edu", date: "2026-04-16", status: "pending" },
+    { id: 105, item: "Hydro Flask Water Bottle", location: "Gymnasium", reporter: "mike.ross@campus.edu", date: "2026-04-12", status: "resolved" },
+    { id: 106, item: "MacBook Charger", location: "Main Hall", reporter: "lisa.wong@campus.edu", date: "2026-04-14", status: "pending" },
+    { id: 107, item: "Ray-Ban Sunglasses", location: "Courtyard bench", reporter: "alex.jordan@campus.edu", date: "2026-04-15", status: "pending" },
+    { id: 108, item: "House Keys with USB", location: "Student Union", reporter: "front.desk@campus.edu", date: "2026-04-16", status: "resolved" },
+    { id: 109, item: "Samsung Galaxy Buds", location: "Bus stop", reporter: "bus.service@campus.edu", date: "2026-04-11", status: "pending" },
+    { id: 110, item: "Library Card - Michael Torres", location: "Library entrance", reporter: "lib.staff@campus.edu", date: "2026-04-10", status: "resolved" }
+  ];
+
+  // DOM elements
+  const tbody = document.getElementById('tableBody');
+  const searchInput = document.getElementById('searchInput');
+  const statusFilter = document.getElementById('statusFilter');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const totalFoundSpan = document.getElementById('totalFound');
+  const pendingCountSpan = document.getElementById('pendingCount');
+  const resolvedCountSpan = document.getElementById('resolvedCount');
+
+  // Helper: update stats counters
+  function updateStats() {
+    const total = foundReports.length;
+    const pending = foundReports.filter(r => r.status === 'pending').length;
+    const resolved = foundReports.filter(r => r.status === 'resolved').length;
+    totalFoundSpan.innerText = total;
+    pendingCountSpan.innerText = pending;
+    resolvedCountSpan.innerText = resolved;
+  }
+
+  // Helper: render table based on search & filter
+  function renderTable() {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const statusValue = statusFilter.value;
+
+    let filtered = [...foundReports];
+    if (searchTerm) {
+      filtered = filtered.filter(r => 
+        r.item.toLowerCase().includes(searchTerm) ||
+        r.location.toLowerCase().includes(searchTerm) ||
+        r.reporter.toLowerCase().includes(searchTerm)
+      );
+    }
+    if (statusValue !== 'all') {
+      filtered = filtered.filter(r => r.status === statusValue);
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="no-data">No found reports match your criteria.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(report => `
+      <tr>
+        <td>#${report.id}</td>
+        <td><i class="fas fa-box" style="color: var(--amber); margin-right: 8px;"></i>${escapeHtml(report.item)}</td>
+        <td><i class="fas fa-map-marker-alt"></i> ${escapeHtml(report.location)}</td>
+        <td><i class="fas fa-envelope"></i> ${escapeHtml(report.reporter)}</td>
+        <td>${report.date}</td>
+        <td><span class="status-badge ${report.status === 'pending' ? 'status-pending' : 'status-resolved'}">${report.status === 'pending' ? 'Pending' : 'Resolved'}</span></td>
+        <td class="action-buttons">
+          <button class="action-btn view" data-id="${report.id}" title="View Details"><i class="fas fa-eye"></i></button>
+          <button class="action-btn resolve" data-id="${report.id}" title="Mark Resolved"><i class="fas fa-check-circle"></i></button>
+          <button class="action-btn delete" data-id="${report.id}" title="Delete Report"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>
+    `).join('');
+
+    // attach event listeners to dynamically created buttons
+    document.querySelectorAll('.action-btn.view').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.id);
+        viewReportDetails(id);
+      });
+    });
+    document.querySelectorAll('.action-btn.resolve').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.id);
+        resolveReport(id);
+      });
+    });
+    document.querySelectorAll('.action-btn.delete').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.id);
+        deleteReport(id);
+      });
+    });
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // View details - simple alert simulation (can be expanded)
+  function viewReportDetails(id) {
+    const report = foundReports.find(r => r.id === id);
+    if (report) {
+      alert(`📋 Found Report Details\n\nItem: ${report.item}\nLocation: ${report.location}\nReporter: ${report.reporter}\nDate: ${report.date}\nStatus: ${report.status === 'pending' ? 'Pending' : 'Resolved'}\n\n(Admin view - full details can be expanded)`);
+    }
+  }
+
+  // Mark as resolved
+  function resolveReport(id) {
+    const report = foundReports.find(r => r.id === id);
+    if (report && report.status === 'pending') {
+      if (confirm(`Mark "${report.item}" as resolved/returned?`)) {
+        report.status = 'resolved';
+        updateStats();
+        renderTable();
+        showToast(`✅ "${report.item}" marked as resolved.`);
+      }
+    } else if (report && report.status === 'resolved') {
+      showToast(`⚠️ "${report.item}" is already resolved.`, true);
+    }
+  }
+
+  // Delete report
+  function deleteReport(id) {
+    const report = foundReports.find(r => r.id === id);
+    if (report && confirm(`Permanently delete report for "${report.item}"? This action cannot be undone.`)) {
+      foundReports = foundReports.filter(r => r.id !== id);
+      updateStats();
+      renderTable();
+      showToast(`🗑️ Report #${id} deleted.`, false);
+    }
+  }
+
+  // Simple toast notification
+  function showToast(message, isError = false) {
+    let toast = document.getElementById('dynamicToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'dynamicToast';
+      toast.style.position = 'fixed';
+      toast.style.bottom = '20px';
+      toast.style.left = '50%';
+      toast.style.transform = 'translateX(-50%) scale(0.9)';
+      toast.style.background = '#1e2a3a';
+      toast.style.backdropFilter = 'blur(20px)';
+      toast.style.padding = '0.8rem 1.6rem';
+      toast.style.borderRadius = '60px';
+      toast.style.color = '#fff';
+      toast.style.fontWeight = '500';
+      toast.style.zIndex = '2000';
+      toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.4)';
+      toast.style.borderLeft = `4px solid ${isError ? '#ff6b6b' : 'var(--amber)'}`;
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.2s, transform 0.2s';
+      toast.style.pointerEvents = 'none';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.borderLeftColor = isError ? '#ff6b6b' : 'var(--amber)';
+    toast.classList.add('show');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) scale(1)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) scale(0.9)';
+    }, 2800);
+  }
+
+  // Event listeners for search and filter
+  searchInput.addEventListener('input', renderTable);
+  statusFilter.addEventListener('change', renderTable);
+  refreshBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    statusFilter.value = 'all';
+    renderTable();
+    showToast('🔄 Reports refreshed');
+  });
+
+  // initial render
+  updateStats();
+  renderTable();
+</script>
+</body>
+</html>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusCare – Create Account | Lost & Found Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* ============================================================
+     ADVANCED GLOBAL STYLES (CampusCare Register Theme)
+     ============================================================ */
+  :root {
+    --navy: #0a1424;
+    --navy-light: #111e2f;
+    --amber: #f5a623;
+    --amber-dim: #d48d1a;
+    --cream: #f8f3e9;
+    --text-main: #edf2f9;
+    --text-muted: #8da1b5;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(18, 30, 46, 0.65);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+    --glow-amber: rgba(245,166,35,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* animated grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ========== HEADER (Glassmorphism) ========== */
+  header {
+    background: rgba(10, 20, 36, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo i {
+    color: var(--amber);
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(245,166,35,0.4));
+  }
+  .logo span {
+    background: linear-gradient(135deg, #fff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .main-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    transition: var(--transition-smooth);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-menu a:hover, .main-menu a.active {
+    color: var(--cream);
+    background: rgba(245,166,35,0.12);
+    transform: translateY(-1px);
+  }
+
+  /* ========== PAGE HERO ========== */
+  .page-hero {
+    text-align: center;
+    padding: 2.5rem 1.5rem 0.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .page-hero p {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  /* ========== REGISTER LAYOUT ========== */
+  .auth-wrap {
+    max-width: 550px;
+    margin: 2rem auto 4rem;
+    padding: 0 1.5rem;
+  }
+
+  .auth-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2rem 2.2rem;
+    transition: var(--transition-smooth);
+  }
+  .auth-card:hover {
+    border-color: rgba(245,166,35,0.5);
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+  }
+  .auth-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .auth-card h2 i {
+    color: var(--amber);
+  }
+  .form-subtext {
+    color: var(--text-muted);
+    margin-bottom: 1.8rem;
+    border-left: 3px solid var(--amber);
+    padding-left: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .form-row {
+    margin-bottom: 1.4rem;
+  }
+  .form-row label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .form-row input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--text-main);
+    font-family: inherit;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+  }
+  .form-row input:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--glow-amber);
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .error-msg {
+    color: #ff9f6e;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    display: none;
+  }
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .password-wrapper input {
+    flex: 1;
+    padding-right: 3rem;
+  }
+  .toggle-password {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .toggle-password:hover {
+    color: var(--amber);
+  }
+  /* Password strength meter */
+  .strength-meter {
+    margin-top: 8px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .strength-fill {
+    width: 0%;
+    height: 100%;
+    transition: width 0.3s, background 0.3s;
+  }
+  .strength-text {
+    font-size: 0.65rem;
+    margin-top: 5px;
+    color: var(--text-muted);
+  }
+  .primary-btn {
+    background: linear-gradient(95deg, var(--amber), #e6a017);
+    color: #0a1424;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 14px rgba(245,166,35,0.3);
+  }
+  .primary-btn:hover {
+    background: var(--amber-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px -8px rgba(245,166,35,0.4);
+  }
+  .auth-hint {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .auth-hint a {
+    color: var(--amber);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .auth-hint a:hover {
+    text-decoration: underline;
+  }
+
+  /* toast message */
+  .toast-msg {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #1e2a3a;
+    backdrop-filter: blur(20px);
+    padding: 0.8rem 1.6rem;
+    border-radius: 60px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 2000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border-left: 4px solid var(--amber);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+  .toast-msg.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  footer {
+    background: #07101e;
+    margin-top: 1rem;
+    padding: 2rem 2rem 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-content p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 650px) {
+    header { padding: 0.8rem 1.5rem; flex-direction: column; align-items: stretch; text-align: center; }
+    .main-menu { justify-content: center; }
+    .auth-wrap { padding: 0 1.2rem; }
+    .auth-card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+<i class="fas fa-leaf"></i>
+<span>CampusCare</span> – Lost & Found Portal
+</div>
+<nav class="main-menu">
+<a href="index.html"><i class="fas fa-home"></i> Home</a>
+<a href="search.html"><i class="fas fa-sliders-h"></i> Search</a>
+<a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+<a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+<a href="Login.html"><i class="fas fa-user"></i> Login</a>
+</nav>
+</header>
+
+<main>
+<section class="page-hero">
+<h1><i class="fas fa-user-plus"></i> Join CampusCare</h1>
+<p>Create your account and start reporting lost & found items</p>
+</section>
+
+<section class="auth-wrap">
+<div class="auth-card">
+<h2><i class="fas fa-clipboard-list"></i> Register</h2>
+<p class="form-subtext">Fill in the details to get started</p>
+
+<form id="registerForm">
+<div class="form-row">
+<label><i class="fas fa-user"></i> Full Name</label>
+<input type="text" id="fullName" placeholder="e.g., Priya Sharma">
+<div id="nameError" class="error-msg">Please enter your full name</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-envelope"></i> Email Address</label>
+<input type="email" id="regEmail" placeholder="student@campus.edu">
+<div id="emailError" class="error-msg">Valid email required</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-key"></i> Password</label>
+<div class="password-wrapper">
+<input type="password" id="regPassword" placeholder="Create a strong password">
+<i class="fas fa-eye-slash toggle-password" id="togglePassword"></i>
+</div>
+<div class="strength-meter">
+<div class="strength-fill" id="strengthFill"></div>
+</div>
+<div class="strength-text" id="strengthText">Password strength: </div>
+<div id="passwordError" class="error-msg">Password must be at least 6 characters</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-check-circle"></i> Confirm Password</label>
+<div class="password-wrapper">
+<input type="password" id="confirmPassword" placeholder="Confirm your password">
+<i class="fas fa-eye-slash toggle-password" id="toggleConfirm"></i>
+</div>
+<div id="confirmError" class="error-msg">Passwords do not match</div>
+</div>
+
+<button type="submit" class="primary-btn">
+<i class="fas fa-user-plus"></i> Create Account
+</button>
+
+<p class="auth-hint">
+Already have an account? <a href="Login.html">Sign in</a>
+</p>
+</form>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="footer-content">
+<p>© 2026 CampusCare — Smart Lost & Found for Campuses. All rights reserved.</p>
+</div>
+</footer>
+
+<div id="toastMsg" class="toast-msg">✨ Account created! Redirecting to login...</div>
+
+<script>
+  (function() {
+    // DOM elements
+    const form = document.getElementById('registerForm');
+    const nameInput = document.getElementById('fullName');
+    const emailInput = document.getElementById('regEmail');
+    const passwordInput = document.getElementById('regPassword');
+    const confirmInput = document.getElementById('confirmPassword');
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmError = document.getElementById('confirmError');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthText = document.getElementById('strengthText');
+    const toast = document.getElementById('toastMsg');
+
+    // Toggle password visibility for both fields
+    const togglePwd = document.getElementById('togglePassword');
+    const toggleConfirm = document.getElementById('toggleConfirm');
+    
+    togglePwd.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    toggleConfirm.addEventListener('click', function() {
+      const type = confirmInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmInput.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+
+    // Password strength meter
+    function checkPasswordStrength(pwd) {
+      let strength = 0;
+      if (pwd.length >= 6) strength += 1;
+      if (pwd.length >= 10) strength += 1;
+      if (/[A-Z]/.test(pwd)) strength += 1;
+      if (/[0-9]/.test(pwd)) strength += 1;
+      if (/[^A-Za-z0-9]/.test(pwd)) strength += 1;
+      
+      let width = 0;
+      let color = '#8a99b0';
+      let text = 'Very weak';
+      
+      if (pwd.length === 0) {
+        width = 0;
+        text = '';
+      } else if (strength <= 1) {
+        width = 20;
+        color = '#ff6b6b';
+        text = 'Weak';
+      } else if (strength === 2) {
+        width = 40;
+        color = '#ffa500';
+        text = 'Fair';
+      } else if (strength === 3) {
+        width = 60;
+        color = '#ffd966';
+        text = 'Good';
+      } else if (strength === 4) {
+        width = 80;
+        color = '#a0d468';
+        text = 'Strong';
+      } else {
+        width = 100;
+        color = '#8eff9a';
+        text = 'Very Strong';
+      }
+      
+      strengthFill.style.width = width + '%';
+      strengthFill.style.background = color;
+      strengthText.innerHTML = pwd.length ? `Password strength: ${text}` : 'Password strength: ';
+    }
+
+    passwordInput.addEventListener('input', function() {
+      const pwd = passwordInput.value;
+      checkPasswordStrength(pwd);
+      if (pwd.length > 0 && pwd.length < 6) {
+        passwordError.style.display = 'block';
+      } else {
+        passwordError.style.display = 'none';
+      }
+      // Also re-check confirm match
+      if (confirmInput.value) validateConfirm();
+    });
+
+    // Validation functions
+    function validateName() {
+      const name = nameInput.value.trim();
+      if (name === '' || name.length < 2) {
+        nameError.style.display = 'block';
+        return false;
+      }
+      nameError.style.display = 'none';
+      return true;
+    }
+
+    function validateEmail() {
+      const email = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+      if (email === '' || !emailRegex.test(email)) {
+        emailError.style.display = 'block';
+        return false;
+      }
+      emailError.style.display = 'none';
+      return true;
+    }
+
+    function validatePassword() {
+      const pwd = passwordInput.value;
+      if (pwd.length < 6) {
+        passwordError.style.display = 'block';
+        return false;
+      }
+      passwordError.style.display = 'none';
+      return true;
+    }
+
+    function validateConfirm() {
+      const pwd = passwordInput.value;
+      const confirm = confirmInput.value;
+      if (pwd !== confirm) {
+        confirmError.style.display = 'block';
+        return false;
+      }
+      confirmError.style.display = 'none';
+      return true;
+    }
+
+    nameInput.addEventListener('input', validateName);
+    emailInput.addEventListener('input', validateEmail);
+    confirmInput.addEventListener('input', validateConfirm);
+
+    // Show toast
+    function showToast(message, isError = false) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Simulate registration (demo)
+    function registerUser(name, email, password) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          // In a real app, send data to backend
+          console.log(`Registration attempt: ${name}, ${email}`);
+          resolve(true);
+        }, 1000);
+      });
+    }
+
+    // Form submission
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const isNameValid = validateName();
+      const isEmailValid = validateEmail();
+      const isPasswordValid = validatePassword();
+      const isConfirmValid = validateConfirm();
+      
+      if (!isNameValid || !isEmailValid || !isPasswordValid || !isConfirmValid) {
+        showToast('❌ Please fix the errors before submitting.', true);
+        return;
+      }
+      
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      
+      const submitBtn = form.querySelector('.primary-btn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Creating account...';
+      submitBtn.disabled = true;
+      
+      const success = await registerUser(name, email, password);
+      if (success) {
+        showToast('✅ Account created successfully! Redirecting to login...');
+        setTimeout(() => {
+          window.location.href = 'Login.html';
+        }, 1500);
+      } else {
+        showToast('⚠️ Registration failed. Try again.', true);
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  })();
+</script>
+<form id="registerForm">
+  <input type="text" id="name" placeholder="Full Name" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <button type="submit">Register</button>
+</form>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  const res = await fetch('/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, password })
+  });
+  const data = await res.json();
+  alert(data.message);
+  if (data.success) window.location.href = 'login.html';
+});
+</script>
+</body>
+</html>

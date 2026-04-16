@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusCare – Contact Support | Lost & Found Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* ============================================================
+     ADVANCED GLOBAL STYLES (CampusCare Contact Theme)
+     ============================================================ */
+  :root {
+    --navy: #0a1424;
+    --navy-light: #111e2f;
+    --amber: #f5a623;
+    --amber-dim: #d48d1a;
+    --cream: #f8f3e9;
+    --text-main: #edf2f9;
+    --text-muted: #8da1b5;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(18, 30, 46, 0.65);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+    --glow-amber: rgba(245,166,35,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* animated grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ========== HEADER (Glassmorphism) ========== */
+  header {
+    background: rgba(10, 20, 36, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo i {
+    color: var(--amber);
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(245,166,35,0.4));
+  }
+  .logo span {
+    background: linear-gradient(135deg, #fff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .main-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    transition: var(--transition-smooth);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-menu a:hover, .main-menu a.active {
+    color: var(--cream);
+    background: rgba(245,166,35,0.12);
+    transform: translateY(-1px);
+  }
+  .main-menu a i {
+    font-size: 0.9rem;
+  }
+
+  /* ========== PAGE HERO ========== */
+  .page-hero {
+    text-align: center;
+    padding: 3rem 1.5rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .page-hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  /* ========== CONTACT LAYOUT ========== */
+  .auth-wrap {
+    max-width: 1200px;
+    margin: 2rem auto 3rem;
+    padding: 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .auth-card {
+    flex: 2;
+    min-width: 280px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2rem 2.2rem;
+    transition: var(--transition-smooth);
+  }
+  .auth-card:hover {
+    border-color: rgba(245,166,35,0.5);
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+  }
+  .auth-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .auth-card h2 i {
+    color: var(--amber);
+  }
+  .form-subtext {
+    color: var(--text-muted);
+    margin-bottom: 1.8rem;
+    border-left: 3px solid var(--amber);
+    padding-left: 1rem;
+  }
+
+  .form-row {
+    margin-bottom: 1.4rem;
+  }
+  .form-row label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .form-row input,
+  .form-row textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--text-main);
+    font-family: inherit;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+  }
+  .form-row input:focus,
+  .form-row textarea:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--glow-amber);
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .error-msg {
+    color: #ff9f6e;
+    font-size: 0.75rem;
+    margin-top: 5px;
+    display: none;
+  }
+  .primary-btn {
+    background: linear-gradient(95deg, var(--amber), #e6a017);
+    color: #0a1424;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 14px rgba(245,166,35,0.3);
+  }
+  .primary-btn:hover {
+    background: var(--amber-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px -8px rgba(245,166,35,0.4);
+  }
+
+  /* right side cards */
+  .form-side {
+    flex: 1;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .side-card {
+    background: rgba(245,166,35,0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    transition: 0.2s;
+  }
+  .side-card:hover {
+    border-color: var(--amber);
+    background: rgba(245,166,35,0.12);
+  }
+  .side-card h3 {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    color: var(--amber);
+  }
+  .side-card p {
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .contact-detail i {
+    width: 24px;
+    color: var(--amber);
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(40, 167, 69, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    color: #8eff9a;
+    margin-top: 1rem;
+  }
+
+  /* toast notification */
+  .toast-msg {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #1e2a3a;
+    backdrop-filter: blur(20px);
+    padding: 0.8rem 1.6rem;
+    border-radius: 60px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 2000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border-left: 4px solid var(--amber);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+  .toast-msg.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  /* footer */
+  footer {
+    background: #07101e;
+    margin-top: 2rem;
+    padding: 2rem 2rem 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .footer-section h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+  .footer-section p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 780px) {
+    header { padding: 0.8rem 1.5rem; flex-direction: column; align-items: stretch; text-align: center; }
+    .main-menu { justify-content: center; }
+    .auth-wrap { padding: 0 1.2rem; flex-direction: column; }
+    .footer-content { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 550px) {
+    .auth-card { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo"><i class="fas fa-leaf"></i><span>CampusCare</span> – Lost & Found Portal</div>
+<nav class="main-menu">
+<a href="index.html"><i class="fas fa-home"></i> Home</a>
+<a href="search.html"><i class="fas fa-sliders-h"></i> Search</a>
+<a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+<a href="contact.html" class="active"><i class="fas fa-envelope"></i> Contact</a>
+<a href="login.html"><i class="fas fa-user"></i> Login</a>
+</nav>
+</header>
+
+<main>
+<section class="page-hero">
+<h1><i class="fas fa-headset"></i> Contact Support</h1>
+<p>We're here to help — reach out for any inquiries or assistance.</p>
+</section>
+
+<section class="auth-wrap">
+<div class="auth-card">
+<h2><i class="fas fa-paper-plane"></i> Send us a message</h2>
+<p class="form-subtext">Fill out the form and our team will respond within 24 hours.</p>
+
+<form id="contactForm">
+<div class="form-row">
+<label><i class="fas fa-user"></i> Full name</label>
+<input type="text" id="contactName" placeholder="e.g., Sarah Johnson" required>
+<div id="nameError" class="error-msg">Please enter your name</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-envelope"></i> Email address</label>
+<input type="email" id="contactEmail" placeholder="hello@campus.com" required>
+<div id="emailError" class="error-msg">Valid email required</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-comment"></i> Your message</label>
+<textarea id="contactMessage" rows="5" placeholder="Describe your issue or question in detail..." required></textarea>
+<div id="msgError" class="error-msg">Message cannot be empty</div>
+<div id="charCounter" style="text-align: right; font-size: 0.7rem; margin-top: 5px; color: var(--text-muted);"></div>
+</div>
+
+<button type="submit" class="primary-btn">
+<i class="fas fa-paper-plane"></i> Send message
+</button>
+</form>
+</div>
+
+<div class="form-side">
+<div class="side-card">
+<h3><i class="fas fa-phone-alt"></i> Direct support</h3>
+<div class="contact-detail">
+<i class="fas fa-envelope"></i> <span>tushardeshpande2025.it@mmcoe.edu.in</span>
+</div>
+<div class="contact-detail">
+<i class="fas fa-clock"></i> <span>Mon-Fri: 9am – 5pm</span>
+</div>
+<div class="status-badge">
+<i class="fas fa-circle" style="font-size: 0.5rem; color: #8eff9a;"></i> Live support active
+</div>
+</div>
+
+<div class="side-card">
+<h3><i class="fas fa-map-pin"></i> Campus hub</h3>
+<p>Student Union Building, Room 204<br>MMCOE, Pune</p>
+<div class="contact-detail">
+<i class="fas fa-globe"></i> <span>help.campuscare.com</span>
+</div>
+</div>
+
+<div class="side-card">
+<h3><i class="fas fa-rocket"></i> Quick tip</h3>
+<p>For lost & found emergencies, include item description, date, and location — we’ll prioritize your request.</p>
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="footer-content">
+<div class="footer-section">
+<h4><i class="fas fa-leaf"></i> CampusCare</h4>
+<p>Making campus life easier, one found item at a time.</p>
+</div>
+<div class="footer-section">
+<p>© 2026 CampusCare. All Rights Reserved.</p>
+</div>
+</div>
+</footer>
+
+<div id="toastMsg" class="toast-msg">📬 Message sent! We'll get back to you soon.</div>
+
+<script>
+  (function() {
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('contactName');
+    const emailInput = document.getElementById('contactEmail');
+    const messageInput = document.getElementById('contactMessage');
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const msgError = document.getElementById('msgError');
+    const charCounter = document.getElementById('charCounter');
+    const toast = document.getElementById('toastMsg');
+
+    // Character counter for message
+    function updateCharCount() {
+      const len = messageInput.value.length;
+      charCounter.innerHTML = len > 0 ? `${len} characters` : ' ';
+      if (len > 500) charCounter.style.color = 'var(--amber)';
+      else charCounter.style.color = 'var(--text-muted)';
+    }
+    messageInput.addEventListener('input', updateCharCount);
+    updateCharCount();
+
+    // Show toast function
+    function showToast(message, isError = false) {
+      toast.textContent = message || (isError ? '❌ Please fix errors before sending.' : '📬 Message sent! We\'ll get back to you soon.');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3200);
+    }
+
+    // Validate email format
+    function isValidEmail(email) {
+      return /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email);
+    }
+
+    // Real-time inline validation
+    function validateName() {
+      const val = nameInput.value.trim();
+      if (val === '') {
+        nameError.style.display = 'block';
+        return false;
+      }
+      nameError.style.display = 'none';
+      return true;
+    }
+
+    function validateEmail() {
+      const val = emailInput.value.trim();
+      if (val === '' || !isValidEmail(val)) {
+        emailError.style.display = 'block';
+        return false;
+      }
+      emailError.style.display = 'none';
+      return true;
+    }
+
+    function validateMessage() {
+      const val = messageInput.value.trim();
+      if (val === '') {
+        msgError.style.display = 'block';
+        return false;
+      }
+      msgError.style.display = 'none';
+      return true;
+    }
+
+    nameInput.addEventListener('input', validateName);
+    emailInput.addEventListener('input', validateEmail);
+    messageInput.addEventListener('input', validateMessage);
+
+    // Form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const isNameValid = validateName();
+      const isEmailValid = validateEmail();
+      const isMsgValid = validateMessage();
+
+      if (!isNameValid || !isEmailValid || !isMsgValid) {
+        showToast('⚠️ Please fill all fields correctly.', true);
+        return;
+      }
+
+      const submitBtn = form.querySelector('.primary-btn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';
+      submitBtn.disabled = true;
+
+      // Simulate async API call
+      setTimeout(() => {
+        // success
+        showToast(`✅ Thanks ${nameInput.value.trim().split(' ')[0]}! Your message has been delivered to CampusCare support.`);
+        form.reset();
+        updateCharCount();
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        // clear error states
+        nameError.style.display = 'none';
+        emailError.style.display = 'none';
+        msgError.style.display = 'none';
+        console.log(`Contact message from ${emailInput.value.trim()}`);
+      }, 1000);
+    });
+  })();
+</script>
+</body>
+</html>

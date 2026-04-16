@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusCare – Report Lost Item | Student Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* ============================================================
+     ADVANCED GLOBAL STYLES (Report Lost Page)
+     ============================================================ */
+  :root {
+    --navy: #0a1424;
+    --navy-light: #111e2f;
+    --amber: #f5a623;
+    --amber-dim: #d48d1a;
+    --cream: #f8f3e9;
+    --text-main: #edf2f9;
+    --text-muted: #8da1b5;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(18, 30, 46, 0.65);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+    --glow-amber: rgba(245,166,35,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Header */
+  header {
+    background: rgba(10, 20, 36, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo i {
+    color: var(--amber);
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(245,166,35,0.4));
+  }
+  .logo span {
+    background: linear-gradient(135deg, #fff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .main-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    transition: var(--transition-smooth);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-menu a:hover, .main-menu a.active {
+    color: var(--cream);
+    background: rgba(245,166,35,0.12);
+    transform: translateY(-1px);
+  }
+
+  /* Hero */
+  .page-hero {
+    text-align: center;
+    padding: 2rem 1.5rem 0.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .page-hero p {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+
+  /* Form Layout */
+  .auth-wrap {
+    max-width: 750px;
+    margin: 2rem auto 3rem;
+    padding: 0 1.5rem;
+  }
+  .auth-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2rem 2.2rem;
+    transition: var(--transition-smooth);
+  }
+  .auth-card:hover {
+    border-color: rgba(245,166,35,0.5);
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+  }
+  .auth-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .auth-card h2 i {
+    color: var(--amber);
+  }
+  .form-subtext {
+    color: var(--text-muted);
+    margin-bottom: 1.8rem;
+    border-left: 3px solid var(--amber);
+    padding-left: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .form-row {
+    margin-bottom: 1.4rem;
+  }
+  .form-row label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .form-row input, .form-row textarea, .form-row select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--text-main);
+    font-family: inherit;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+  }
+  .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--glow-amber);
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .error-msg {
+    color: #ff9f6e;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    display: none;
+  }
+
+  /* Contact info side (optional, but improves UX) */
+  .info-side {
+    margin-top: 1rem;
+    background: rgba(245,166,35,0.05);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+  .info-side p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .primary-btn {
+    background: linear-gradient(95deg, var(--amber), #e6a017);
+    color: #0a1424;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 14px rgba(245,166,35,0.3);
+  }
+  .primary-btn:hover {
+    background: var(--amber-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px -8px rgba(245,166,35,0.4);
+  }
+
+  /* Toast */
+  .toast-msg {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #1e2a3a;
+    backdrop-filter: blur(20px);
+    padding: 0.8rem 1.6rem;
+    border-radius: 60px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 2000;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border-left: 4px solid var(--amber);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+  .toast-msg.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+
+  footer {
+    background: #07101e;
+    margin-top: 2rem;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .footer-section h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+  .footer-section p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 780px) {
+    header { padding: 0.8rem 1.5rem; flex-direction: column; text-align: center; }
+    .main-menu { justify-content: center; }
+    .auth-wrap { padding: 0 1.2rem; }
+    .footer-content { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo"><i class="fas fa-leaf"></i><span>CampusCare</span> – Student Portal</div>
+<nav class="main-menu">
+<a href="uindex.html"><i class="fas fa-gauge"></i> Dashboard</a>
+<a href="ureportlost.html" class="active"><i class="fas fa-box-open"></i> Report Lost</a>
+<a href="ureportfound.html"><i class="fas fa-hand-holding-heart"></i> Report Found</a>
+<a href="index.html"><i class="fas fa-right-from-bracket"></i> Logout</a>
+</nav>
+</header>
+
+<main>
+<section class="page-hero">
+<h1><i class="fas fa-box-open"></i> Report Lost Item</h1>
+<p>Provide details and increase chances of recovering your lost belongings</p>
+</section>
+
+<section class="auth-wrap">
+<div class="auth-card">
+<h2><i class="fas fa-clipboard-list"></i> Lost Item Details</h2>
+<p class="form-subtext">Accurate information helps us match with found reports</p>
+
+<form id="lostItemForm">
+<div class="form-row">
+<label><i class="fas fa-tag"></i> Item Name *</label>
+<input type="text" id="itemName" placeholder="e.g., Laptop, Wallet, ID Card, Keys">
+<div id="itemNameError" class="error-msg">Item name is required</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-map-marker-alt"></i> Location Lost *</label>
+<input type="text" id="location" placeholder="e.g., Library 2nd floor, Canteen, Gym, Parking Lot">
+<div id="locationError" class="error-msg">Location is required</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-calendar"></i> Date Lost *</label>
+<input type="date" id="dateLost">
+<div id="dateError" class="error-msg">Please select the date you lost the item</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-align-left"></i> Description *</label>
+<textarea id="description" rows="4" placeholder="Color, brand, distinctive marks, any serial number, etc."></textarea>
+<div id="descError" class="error-msg">Description is required</div>
+</div>
+
+<div class="info-side">
+<p><i class="fas fa-lightbulb"></i> Tip: Add specific details like "black leather wallet with student ID inside" — it helps identify your item faster.</p>
+</div>
+
+<button type="submit" class="primary-btn">
+<i class="fas fa-paper-plane"></i> Submit Lost Report
+</button>
+</form>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="footer-content">
+<div class="footer-section">
+<h4><i class="fas fa-leaf"></i> CampusCare</h4>
+<p>Making campus life easier, one found item at a time.</p>
+</div>
+<div class="footer-section">
+<p>© 2026 CampusCare. All Rights Reserved.</p>
+</div>
+</div>
+</footer>
+
+<div id="toastMsg" class="toast-msg">🔍 Lost report submitted! We'll notify you if found.</div>
+
+<script>
+  (function() {
+    const form = document.getElementById('lostItemForm');
+    const itemName = document.getElementById('itemName');
+    const location = document.getElementById('location');
+    const dateLost = document.getElementById('dateLost');
+    const description = document.getElementById('description');
+
+    // Error spans
+    const nameErr = document.getElementById('itemNameError');
+    const locErr = document.getElementById('locationError');
+    const dateErr = document.getElementById('dateError');
+    const descErr = document.getElementById('descError');
+
+    const toast = document.getElementById('toastMsg');
+
+    // Set max date to today (cannot report lost in the future)
+    const today = new Date().toISOString().split('T')[0];
+    dateLost.setAttribute('max', today);
+
+    // Helper: show toast
+    function showToast(message, isError = false) {
+      toast.textContent = message;
+      toast.style.borderLeftColor = isError ? '#ff6b6b' : 'var(--amber)';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Validations
+    function validateItemName() {
+      const val = itemName.value.trim();
+      if (val === '') {
+        nameErr.style.display = 'block';
+        return false;
+      }
+      nameErr.style.display = 'none';
+      return true;
+    }
+
+    function validateLocation() {
+      const val = location.value.trim();
+      if (val === '') {
+        locErr.style.display = 'block';
+        return false;
+      }
+      locErr.style.display = 'none';
+      return true;
+    }
+
+    function validateDate() {
+      const val = dateLost.value;
+      if (val === '') {
+        dateErr.style.display = 'block';
+        return false;
+      }
+      dateErr.style.display = 'none';
+      return true;
+    }
+
+    function validateDescription() {
+      const val = description.value.trim();
+      if (val === '') {
+        descErr.style.display = 'block';
+        return false;
+      }
+      descErr.style.display = 'none';
+      return true;
+    }
+
+    // Real-time listeners
+    itemName.addEventListener('input', validateItemName);
+    location.addEventListener('input', validateLocation);
+    dateLost.addEventListener('change', validateDate);
+    description.addEventListener('input', validateDescription);
+
+    // Form submit
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const isNameValid = validateItemName();
+      const isLocValid = validateLocation();
+      const isDateValid = validateDate();
+      const isDescValid = validateDescription();
+
+      if (!isNameValid || !isLocValid || !isDateValid || !isDescValid) {
+        showToast('❌ Please fill all required fields correctly.', true);
+        return;
+      }
+
+      // Simulate submission
+      const submitBtn = form.querySelector('.primary-btn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Submitting...';
+      submitBtn.disabled = true;
+
+      // Simulate network delay
+      setTimeout(() => {
+        const reportData = {
+          item: itemName.value.trim(),
+          location: location.value.trim(),
+          date: dateLost.value,
+          description: description.value.trim()
+        };
+        console.log('Lost report submitted:', reportData);
+        
+        showToast(`✅ Lost report for "${reportData.item}" submitted! We'll alert you if matched.`);
+        
+        // Reset form
+        form.reset();
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        
+        // Clear error displays
+        nameErr.style.display = 'none';
+        locErr.style.display = 'none';
+        dateErr.style.display = 'none';
+        descErr.style.display = 'none';
+      }, 1200);
+    });
+  })();
+</script>
+<form id="lostForm">
+  <input type="text" id="itemName" placeholder="Item name" required>
+  <input type="text" id="location" placeholder="Location lost" required>
+  <input type="date" id="lostDate" required>
+  <textarea id="description" placeholder="Description" required></textarea>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) window.location.href = 'login.html';
+
+document.getElementById('lostForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const item_name = document.getElementById('itemName').value;
+  const location = document.getElementById('location').value;
+  const lost_date = document.getElementById('lostDate').value;
+  const description = document.getElementById('description').value;
+
+  const res = await fetch('/api/items/lost', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ item_name, location, lost_date, description })
+  });
+  const data = await res.json();
+  alert(data.message);
+  if (data.success) window.location.href = 'uindex.html';
+});
+</script>
+</body>
+</html>

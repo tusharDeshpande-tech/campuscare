@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusCare – Smart Search | Lost & Found Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+  /* ============================================================
+     ADVANCED GLOBAL STYLES (CampusCare Search Theme)
+     ============================================================ */
+  :root {
+    --navy: #0a1424;
+    --navy-light: #111e2f;
+    --amber: #f5a623;
+    --amber-dim: #d48d1a;
+    --cream: #f8f3e9;
+    --text-main: #edf2f9;
+    --text-muted: #8da1b5;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(18, 30, 46, 0.65);
+    --radius-xl: 24px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --shadow-lg: 0 20px 35px -12px rgba(0,0,0,0.4);
+    --glow-amber: rgba(245,166,35,0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: radial-gradient(circle at 10% 20%, #0f1a2b, #050a12);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  /* animated grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ========== HEADER (Glassmorphism) ========== */
+  header {
+    background: rgba(10, 20, 36, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 0.9rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', 'DM Sans', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo i {
+    color: var(--amber);
+    font-size: 1.6rem;
+    filter: drop-shadow(0 0 5px rgba(245,166,35,0.4));
+  }
+  .logo span {
+    background: linear-gradient(135deg, #fff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .main-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    transition: var(--transition-smooth);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .main-menu a:hover, .main-menu a.active {
+    color: var(--cream);
+    background: rgba(245,166,35,0.12);
+    transform: translateY(-1px);
+  }
+  .main-menu a i {
+    font-size: 0.9rem;
+  }
+
+  /* ========== PAGE HERO ========== */
+  .page-hero {
+    text-align: center;
+    padding: 3rem 1.5rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .page-hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, var(--amber));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .page-hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  /* ========== SEARCH LAYOUT (enhanced) ========== */
+  .auth-wrap {
+    max-width: 1200px;
+    margin: 2rem auto 1rem;
+    padding: 0 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .auth-card {
+    flex: 2;
+    min-width: 280px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 2rem 2rem 2.2rem;
+    transition: var(--transition-smooth);
+  }
+  .auth-card:hover {
+    border-color: rgba(245,166,35,0.5);
+    box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+  }
+  .auth-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .auth-card h2 i {
+    color: var(--amber);
+  }
+  .form-subtext {
+    color: var(--text-muted);
+    margin-bottom: 1.8rem;
+    border-left: 3px solid var(--amber);
+    padding-left: 1rem;
+  }
+
+  .form-row {
+    margin-bottom: 1.4rem;
+  }
+  .form-row label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .form-row input,
+  .form-row select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--text-main);
+    font-family: inherit;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+  }
+  .form-row input:focus,
+  .form-row select:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px var(--glow-amber);
+    background: rgba(0, 0, 0, 0.6);
+  }
+  .error {
+    color: #ff9f6e;
+    font-size: 0.75rem;
+    margin-top: 5px;
+    display: none;
+  }
+  .primary-btn {
+    background: linear-gradient(95deg, var(--amber), #e6a017);
+    color: #0a1424;
+    border: none;
+    padding: 0.9rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 14px rgba(245,166,35,0.3);
+  }
+  .primary-btn:hover {
+    background: var(--amber-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px -8px rgba(245,166,35,0.4);
+  }
+
+  /* right side card */
+  .form-side {
+    flex: 1;
+    min-width: 240px;
+  }
+  .side-card {
+    background: rgba(245,166,35,0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    transition: 0.2s;
+  }
+  .side-card h3 {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    color: var(--amber);
+  }
+  .side-card p {
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* RESULTS SECTION (modern) */
+  .results-section {
+    max-width: 1200px;
+    margin: 1rem auto 3rem;
+    padding: 0 2rem;
+  }
+  .results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.7rem;
+  }
+  .results-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .results-count {
+    background: rgba(245,166,35,0.2);
+    padding: 0.2rem 0.8rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    color: var(--amber);
+  }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .result-card {
+    background: rgba(18, 30, 46, 0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.4rem;
+    transition: var(--transition-smooth);
+  }
+  .result-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--amber);
+    background: rgba(30, 48, 70, 0.8);
+  }
+  .result-card h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.7rem;
+  }
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.8rem;
+    border-radius: 40px;
+    font-weight: 600;
+  }
+  .badge-lost {
+    background: rgba(220, 53, 69, 0.2);
+    color: #ff8a8a;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+  }
+  .badge-found {
+    background: rgba(40, 167, 69, 0.2);
+    color: #8eff9a;
+    border: 1px solid rgba(40, 167, 69, 0.4);
+  }
+  .result-detail {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .result-detail i {
+    width: 20px;
+    color: var(--amber);
+  }
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(0,0,0,0.2);
+    border-radius: var(--radius-xl);
+    color: var(--text-muted);
+  }
+  footer {
+    background: #07101e;
+    margin-top: 2rem;
+    padding: 2rem 2rem 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .footer-section h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+  .footer-section p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+  @media (max-width: 780px) {
+    header { padding: 0.8rem 1.5rem; flex-direction: column; align-items: stretch; text-align: center; }
+    .main-menu { justify-content: center; }
+    .auth-wrap { padding: 0 1.2rem; }
+    .results-section { padding: 0 1.2rem; }
+    .footer-content { flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 550px) {
+    .auth-card { padding: 1.5rem; }
+    .results-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+<i class="fas fa-leaf"></i>
+<span>CampusCare</span> – Lost & Found Portal
+</div>
+<nav class="main-menu">
+<a href="index.html"><i class="fas fa-home"></i> Home</a>
+<a href="search.html" class="active"><i class="fas fa-sliders-h"></i> Search</a>
+<a href="feedback.html"><i class="fas fa-comment"></i> Feedback</a>
+<a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+<a href="login.html"><i class="fas fa-user"></i> Login</a>
+</nav>
+</header>
+
+<main>
+<section class="page-hero">
+<h1><i class="fas fa-magnifying-glass"></i> Smart Search</h1>
+<p>Find lost or found items across campus instantly.</p>
+</section>
+
+<section class="auth-wrap">
+<div class="auth-card">
+<h2><i class="fas fa-filter"></i> Search items</h2>
+<p class="form-subtext">Type item name like “ID Card”, “Bottle”, “Phone” or select category.</p>
+
+<form id="searchForm">
+<div class="form-row">
+<label><i class="fas fa-keyboard"></i> Keyword</label>
+<input type="text" id="keyword" placeholder="e.g., wallet, keys, laptop, charger">
+<div id="errorMsg" class="error">⚠️ Please enter a keyword</div>
+</div>
+
+<div class="form-row">
+<label><i class="fas fa-tag"></i> Category</label>
+<select id="category">
+<option value="">All (Lost & Found)</option>
+<option value="Lost">Lost items only</option>
+<option value="Found">Found items only</option>
+</select>
+</div>
+
+<button type="submit" class="primary-btn">
+<i class="fas fa-search"></i> Search now
+</button>
+</form>
+</div>
+
+<div class="form-side">
+<div class="side-card">
+<h3><i class="fas fa-lightbulb"></i> Search tips</h3>
+<p>Use short, specific keywords: “water bottle”, “student id”, “airpods”.<br>Try both “Lost” and “Found” categories for better results.</p>
+</div>
+<div class="side-card" style="margin-top: 1rem;">
+<h3><i class="fas fa-chart-line"></i> Live stats</h3>
+<p><span id="totalItemsStat">42</span> items reported this week</p>
+</div>
+</div>
+</section>
+
+<!-- Dynamic Results Section -->
+<section class="results-section" id="resultsSection">
+<div class="results-header">
+<h2><i class="fas fa-list-ul"></i> Matching items</h2>
+<span class="results-count" id="resultsCount">0 results</span>
+</div>
+<div id="resultsContainer" class="results-grid">
+<!-- dynamic cards will appear here -->
+<div class="no-results">✨ Use the search bar above to find items</div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="footer-content">
+<div class="footer-section">
+<h4><i class="fas fa-leaf"></i> CampusCare</h4>
+<p>Making campus life easier, one found item at a time.</p>
+</div>
+<div class="footer-section">
+<p>© 2026 CampusCare. All Rights Reserved.</p>
+</div>
+</div>
+</footer>
+
+<script>
+  // Enhanced dataset (realistic lost & found items)
+  const itemsDatabase = [
+    { id: 1, name: "Black Leather Wallet", type: "Lost", location: "Library, 2nd floor", date: "2026-04-14", description: "Contains student ID and cash" },
+    { id: 2, name: "Student ID Card - Emily Chen", type: "Lost", location: "Student Union", date: "2026-04-15", description: "ID# 2024CS076" },
+    { id: 3, name: "Apple AirPods Pro", type: "Found", location: "Canteen (near coffee machine)", date: "2026-04-16", description: "White case with name sticker" },
+    { id: 4, name: "Hydro Flask Water Bottle", type: "Lost", location: "Gymnasium", date: "2026-04-12", description: "Black 32oz" },
+    { id: 5, name: "TI-84 Calculator", type: "Found", location: "Math Building Room 204", date: "2026-04-15", description: "Sticker: 'Calculus Rocks'" },
+    { id: 6, name: "MacBook Charger (USB-C)", type: "Lost", location: "Main Hall", date: "2026-04-14", description: "61W Apple original" },
+    { id: 7, name: "House Keys with USB drive", type: "Found", location: "Parking Lot B", date: "2026-04-16", description: "Keychain: 'Home sweet home'" },
+    { id: 8, name: "Navy Blue Backpack", type: "Lost", location: "Computer Lab", date: "2026-04-13", description: "Contains notebooks and laptop" },
+    { id: 9, name: "Ray-Ban Sunglasses", type: "Found", location: "Courtyard bench", date: "2026-04-15", description: "Black frame" },
+    { id: 10, name: "Samsung Galaxy Buds", type: "Lost", location: "Bus stop", date: "2026-04-16", description: "White, charging case" },
+    { id: 11, name: "Library Card", type: "Found", location: "Library entrance", date: "2026-04-14", description: "Name: Michael Torres" },
+    { id: 12, name: "Textbook: Organic Chemistry", type: "Lost", location: "Science Hall", date: "2026-04-11", description: "7th edition" }
+  ];
+
+  // DOM elements
+  const searchForm = document.getElementById('searchForm');
+  const keywordInput = document.getElementById('keyword');
+  const categorySelect = document.getElementById('category');
+  const errorMsg = document.getElementById('errorMsg');
+  const resultsContainer = document.getElementById('resultsContainer');
+  const resultsCountSpan = document.getElementById('resultsCount');
+  const totalItemsStat = document.getElementById('totalItemsStat');
+
+  // update weekly stats (items from last 7 days)
+  function updateStats() {
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const recentItems = itemsDatabase.filter(item => new Date(item.date) >= sevenDaysAgo);
+    if (totalItemsStat) totalItemsStat.innerText = recentItems.length;
+  }
+  updateStats();
+
+  // render results based on search
+  function performSearch() {
+    const keyword = keywordInput.value.trim().toLowerCase();
+    const category = categorySelect.value;
+
+    // validation
+    if (keyword === "") {
+      errorMsg.style.display = "block";
+      return false;
+    }
+    errorMsg.style.display = "none";
+
+    // filter items
+    let filtered = itemsDatabase.filter(item => {
+      const matchesKeyword = item.name.toLowerCase().includes(keyword) || 
+                             item.description.toLowerCase().includes(keyword) ||
+                             item.location.toLowerCase().includes(keyword);
+      const matchesCategory = (category === "" || item.type === category);
+      return matchesKeyword && matchesCategory;
+    });
+
+    // sort by recency (newest first)
+    filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    // display results
+    displayResults(filtered);
+    return true;
+  }
+
+  function displayResults(items) {
+    if (!resultsContainer) return;
+    resultsCountSpan.innerText = `${items.length} result${items.length !== 1 ? 's' : ''}`;
+    
+    if (items.length === 0) {
+      resultsContainer.innerHTML = `<div class="no-results"><i class="fas fa-search"></i> No matching items found. Try different keywords or check spelling.</div>`;
+      return;
+    }
+
+    let html = '';
+    items.forEach(item => {
+      const typeClass = item.type === 'Lost' ? 'badge-lost' : 'badge-found';
+      const typeIcon = item.type === 'Lost' ? '<i class="fas fa-question-circle"></i>' : '<i class="fas fa-check-circle"></i>';
+      html += `
+        <div class="result-card">
+          <h4>
+            ${escapeHtml(item.name)}
+            <span class="badge ${typeClass}">${item.type}</span>
+          </h4>
+          <div class="result-detail">
+            <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(item.location)}</span>
+            <span><i class="fas fa-calendar-alt"></i> ${item.date}</span>
+          </div>
+          <div class="result-detail" style="margin-top: 0.5rem;">
+            <span><i class="fas fa-align-left"></i> ${escapeHtml(item.description)}</span>
+          </div>
+          <div style="margin-top: 0.8rem; font-size: 0.7rem; color: var(--amber);">
+            ${typeIcon} Reported as ${item.type.toLowerCase()}
+          </div>
+        </div>
+      `;
+    });
+    resultsContainer.innerHTML = html;
+  }
+
+  // simple XSS protection
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // handle form submission
+  searchForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    performSearch();
+  });
+
+  // optional: show a few default results on page load (all items)
+  function loadDefaultResults() {
+    // show first 4 recent items as default
+    const defaultItems = [...itemsDatabase].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
+    displayResults(defaultItems);
+  }
+  loadDefaultResults();
+</script>
+<input type="text" id="keyword" placeholder="Search...">
+<select id="category">
+  <option value="all">All</option>
+  <option value="lost">Lost</option>
+  <option value="found">Found</option>
+</select>
+<button onclick="searchItems()">Search</button>
+<div id="results"></div>
+
+<script>
+async function searchItems() {
+  const keyword = document.getElementById('keyword').value;
+  const category = document.getElementById('category').value;
+  if (!keyword.trim()) return;
+  const res = await fetch(`/api/items/search?keyword=${keyword}&category=${category}`);
+  const data = await res.json();
+  if (data.success) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = data.results.map(item => `
+      <div class="result-card">
+        <h3>${item.item_name} (${item.type})</h3>
+        <p>Location: ${item.location}</p>
+        <p>Date: ${item.date}</p>
+        <p>Description: ${item.description}</p>
+        <p>Status: ${item.status}</p>
+        ${item.image_url ? `<img src="${item.image_url}" width="100">` : ''}
+      </div>
+    `).join('');
+  }
+}
+</script>
+</body>
+</html>
